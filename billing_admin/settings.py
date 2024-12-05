@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "delegation.apps.DelegationConfig",
     "guidelines.apps.GuidelinesConfig",
+    "billing.apps.BillingConfig",
 ]
 
 MIDDLEWARE = [

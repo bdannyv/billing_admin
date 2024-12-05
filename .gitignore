@@ -1,1 +1,8 @@
 .env
+
+
+*.sqlite
+
+.idea/**
+
+**/__pycache__/

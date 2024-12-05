@@ -11,7 +11,7 @@ team activities.
 - Managing list of payers
 - Managing list of matters
 - Managing list of actors
-- Managing list of billing guidelines
+- Managing list of billing guidelines and its rules
 - Managing relations between clients/payers/matters/actors/billing guidelines
 - Ability to delegate responsibilities from one actor to another
 
