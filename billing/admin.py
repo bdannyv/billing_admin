@@ -1,8 +1,13 @@
 from django.contrib import admin
 
+from delegation.models import UserActor
+
 from .models import Action, ActionCode, Actor, Bill, Client, ClientPayer, Matter, Payer
 
-# Register your models here.
+
+class ActorDelegationViaUserInline(admin.TabularInline):
+    model = UserActor
+    extra = 0
 
 
 class BillInline(admin.TabularInline):
@@ -49,7 +54,7 @@ class MatterAdmin(admin.ModelAdmin):
 
 @admin.register(Actor)
 class ActorAdmin(admin.ModelAdmin):
-    inlines = [BillInline, ActionInline]
+    inlines = [BillInline, ActionInline, ActorDelegationViaUserInline]
     exclude = ["id"]
 
 

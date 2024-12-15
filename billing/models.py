@@ -24,7 +24,6 @@ class Client(IDMixin, TimestampMixin, models.Model):
     class Meta:
         db_table = f"{BILLING_SCHEMA}.client"
         verbose_name = "Client"
-        verbose_name_plural = "Clients"
         unique_together = ("name", "number")
 
     name = models.CharField(max_length=255)
@@ -38,7 +37,6 @@ class Payer(IDMixin, TimestampMixin, models.Model):
     class Meta:
         db_table = f"{BILLING_SCHEMA}.payer"
         verbose_name = "Payer"
-        verbose_name_plural = "Payers"
         unique_together = ("name", "number")
 
     name = models.CharField(max_length=255)
@@ -65,7 +63,6 @@ class Matter(IDMixin, TimestampMixin, models.Model):
     class Meta:
         db_table = f"{BILLING_SCHEMA}.matter"
         verbose_name = "Matter"
-        verbose_name_plural = "Matters"
         unique_together = ("title", "number")
 
     title = models.CharField(max_length=255)
@@ -81,7 +78,6 @@ class Actor(IDMixin, TimestampMixin, models.Model):
     class Meta:
         db_table = f"{BILLING_SCHEMA}.actor"
         verbose_name = "Actor"
-        verbose_name_plural = "Actors"
         unique_together = ("name", "number")
 
     name = models.CharField(max_length=255)
@@ -95,7 +91,6 @@ class Bill(IDMixin, TimestampMixin, models.Model):
     class Meta:
         db_table = f"{BILLING_SCHEMA}.billing"
         verbose_name = "Billing"
-        verbose_name_plural = "Billings"
         unique_together = ("title", "number")
 
     title = models.CharField(max_length=255)
@@ -123,7 +118,6 @@ class Action(IDMixin, TimestampMixin, models.Model):
     class Meta:
         db_table = f"{BILLING_SCHEMA}.action"
         verbose_name = "Action"
-        verbose_name_plural = "Actions"
         unique_together = ("title", "number")
 
     title = models.CharField(max_length=255)
