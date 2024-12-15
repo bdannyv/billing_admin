@@ -1,10 +1,12 @@
+import uuid
+
 from django.db import models
 
 BILLING_SCHEMA = "billing"
 
 
 class IDMixin(models.Model):
-    id = models.UUIDField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4(), editable=True)
 
     class Meta:
         abstract = True
@@ -65,6 +67,7 @@ class Matter(IDMixin, TimestampMixin, models.Model):
     title = models.CharField(max_length=255)
     number = models.CharField(max_length=255)
     client = models.ForeignKey(Client, on_delete=models.PROTECT)
+    matter_actor = models.ForeignKey("Actor", on_delete=models.PROTECT)
 
 
 class Actor(IDMixin, TimestampMixin, models.Model):
@@ -87,7 +90,7 @@ class Bill(IDMixin, TimestampMixin, models.Model):
 
     title = models.CharField(max_length=255)
     number = models.CharField(max_length=255)
-    billing_actor = models.ForeignKey(Actor, on_delete=models.PROTECT)
+    bill_actor = models.ForeignKey(Actor, on_delete=models.PROTECT)
 
 
 class ActionCode(IDMixin, TimestampMixin, models.Model):
