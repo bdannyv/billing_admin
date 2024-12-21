@@ -19,7 +19,6 @@ team activities.
 
 - Django
 - PostgresSQL
-- Redis
 - Nginx
 - Docker
 - Poetry
