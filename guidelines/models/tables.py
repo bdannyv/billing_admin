@@ -49,7 +49,7 @@ class GuidelinePayer(IDMixin, TimestampMixin, models.Model):
     enabled = models.BooleanField(default=True)
 
     def __str__(self):
-        return f"Guideline: {self.guideline} <-> Matter {self.payer}"
+        return f"Guideline: {self.guideline} <-> Payer {self.payer}"
 
 
 class GuidelineMatter(IDMixin, TimestampMixin, models.Model):
@@ -106,6 +106,9 @@ class Rule(IDMixin, TimestampMixin, models.Model):
     title = models.CharField(max_length=255)
     guideline = models.ForeignKey(Guideline, on_delete=models.SET_NULL, null=True, blank=True)
     firmwide = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.title}"
 
 
 class RulePayer(IDMixin, TimestampMixin, models.Model):
