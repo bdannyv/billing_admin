@@ -9,7 +9,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN curl -sSL https://install.python-poetry.org | python3 -
 ENV PATH="/root/.local/bin:$PATH"
 
-WORKDIR /app
 COPY pyproject.toml poetry.lock ./
 
 
@@ -27,6 +26,8 @@ RUN poetry config virtualenvs.create false \
 # CI Stage
 FROM python:3.12.8-slim as final
 
+WORKDIR /app
+
 # Add a non-root user for security
 RUN groupadd -g 1000 appgroup && \
     useradd -r -u 1000 -g appgroup appuser
@@ -38,16 +39,26 @@ COPY --chown=appuser:appgroup delegation ./delegation
 COPY --chown=appuser:appgroup guidelines ./guidelines
 COPY --chown=appuser:appgroup manage.py ./manage.py
 
-USER appuser
 
 FROM final as CI
 COPY --from=CI-dep /usr/local /usr/local
 RUN python manage.py migrate
+USER appuser
 CMD pytest .
 
 
 # Production Stage
 FROM final as PROD
+
 COPY --from=PROD-dep /usr/local /usr/local
-EXPOSE 8000
+# create dir for static files and grant permissions to appuser
+RUN mkdir -p /app/staticfiles && chown -R appuser:appgroup /app/staticfiles
+RUN python manage.py collectstatic --noinput
+
+# run migrations
+RUN python manage.py migrate
+
+# run the server as appuser
+USER appuser
+
 CMD ["gunicorn", "billing_admin.wsgi:application", "--bind", "0.0.0.0:8000"]
