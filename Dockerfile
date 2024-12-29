@@ -26,6 +26,22 @@ RUN poetry config virtualenvs.create false \
 # CI Stage
 FROM python:3.12.8-slim as final
 
+ARG STATIC_ROOT
+ARG DB_ENGINE
+ARG DB_NAME
+ARG DB_USER
+ARG DB_PASSWORD
+ARG DB_HOST
+ARG DB_PORT
+
+ENV STATIC_ROOT=${STATIC_ROOT}
+ENV DB_ENGINE=${DB_ENGINE}
+ENV DB_NAME=${DB_NAME}
+ENV DB_USER=${DB_USER}
+ENV DB_PASSWORD=${DB_PASSWORD}
+ENV DB_HOST=${DB_HOST}
+ENV DB_PORT=${DB_PORT}
+
 WORKDIR /app
 
 # Add a non-root user for security
@@ -33,17 +49,20 @@ RUN groupadd -g 1000 appgroup && \
     useradd -r -u 1000 -g appgroup appuser
 
 
-COPY --chown=appuser:appgroup billing ./billing
-COPY --chown=appuser:appgroup billing_admin ./billing_admin
-COPY --chown=appuser:appgroup delegation ./delegation
-COPY --chown=appuser:appgroup guidelines ./guidelines
-COPY --chown=appuser:appgroup manage.py ./manage.py
+COPY billing ./billing
+COPY billing_admin ./billing_admin
+COPY delegation ./delegation
+COPY guidelines ./guidelines
+COPY manage.py ./manage.py
+
+# grant read and write permissions to appuser to project root
+RUN chown -R appuser:appgroup /app
 
 
 FROM final as CI
 COPY --from=CI-dep /usr/local /usr/local
-RUN python manage.py migrate
 USER appuser
+RUN python manage.py migrate
 CMD pytest .
 
 
@@ -52,13 +71,13 @@ FROM final as PROD
 
 COPY --from=PROD-dep /usr/local /usr/local
 # create dir for static files and grant permissions to appuser
-RUN mkdir -p /app/staticfiles && chown -R appuser:appgroup /app/staticfiles
+RUN mkdir -p ${STATIC_ROOT} && chown -R appuser:appgroup ${STATIC_ROOT}
 RUN python manage.py collectstatic --noinput
-
-# run migrations
-RUN python manage.py migrate
 
 # run the server as appuser
 USER appuser
+
+# run migrations
+RUN python manage.py migrate
 
 CMD ["gunicorn", "billing_admin.wsgi:application", "--bind", "0.0.0.0:8000"]
