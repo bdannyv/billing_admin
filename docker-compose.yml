@@ -1,0 +1,59 @@
+services:
+  database:
+    image: postgres:17.2-bookworm
+    hostname: "${DB_HOST}"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: "${DB_NAME}"
+      POSTGRES_USER: "${DB_USER}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-U", "postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - dev_db_billing_admin:/var/lib/postgresql/data
+
+  billing-admin:
+    image: billing-admin
+    hostname: "${BACKEND_HOST}"
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        STATIC_ROOT: "${STATIC_ROOT}"
+        DB_ENGINE: "${DB_ENGINE}"
+        DB_NAME: "${DB_NAME}"
+        DB_USER: "${DB_USER}"
+        DB_PASSWORD: "${DB_PASSWORD}"
+        DB_HOST: "${DB_HOST}"
+        DB_PORT: "${DB_PORT}"
+    env_file:
+      - .env
+    depends_on:
+      database:
+        condition: service_healthy
+    volumes:
+      - django_admin_static:${STATIC_ROOT}
+
+  nginx:
+    image: billing-nginx
+    build:
+      context: .
+      dockerfile: nginx.Dockerfile
+      args:
+        BACKEND_HOST: "${BACKEND_HOST}"
+        BACKEND_PORT: "${BACKEND_PORT}"
+        STATIC_ROOT: "${STATIC_ROOT}"
+    ports:
+      - "80:80"
+    volumes:
+      - django_admin_static:${STATIC_ROOT}
+    depends_on:
+      - billing-admin
+
+volumes:
+  dev_db_billing_admin:
+  django_admin_static:

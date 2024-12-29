@@ -22,7 +22,7 @@ class TimestampMixin(models.Model):
 
 class Client(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{BILLING_SCHEMA}.client"
+        db_table = f'"{BILLING_SCHEMA}"."client"'
         verbose_name = "Client"
         unique_together = ("name", "number")
 
@@ -35,7 +35,7 @@ class Client(IDMixin, TimestampMixin, models.Model):
 
 class Payer(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{BILLING_SCHEMA}.payer"
+        db_table = f'"{BILLING_SCHEMA}"."payer"'
         verbose_name = "Payer"
         unique_together = ("name", "number")
 
@@ -49,7 +49,7 @@ class Payer(IDMixin, TimestampMixin, models.Model):
 
 class ClientPayer(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{BILLING_SCHEMA}.client_payer"
+        db_table = f'"{BILLING_SCHEMA}"."client_payer"'
         verbose_name = "Client <-> Payer mapping"
 
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
@@ -61,7 +61,7 @@ class ClientPayer(IDMixin, TimestampMixin, models.Model):
 
 class Matter(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{BILLING_SCHEMA}.matter"
+        db_table = f'"{BILLING_SCHEMA}"."matter"'
         verbose_name = "Matter"
         unique_together = ("title", "number")
 
@@ -76,7 +76,7 @@ class Matter(IDMixin, TimestampMixin, models.Model):
 
 class Actor(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{BILLING_SCHEMA}.actor"
+        db_table = f'"{BILLING_SCHEMA}"."actor"'
         verbose_name = "Actor"
         unique_together = ("name", "number")
 
@@ -89,7 +89,7 @@ class Actor(IDMixin, TimestampMixin, models.Model):
 
 class Bill(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{BILLING_SCHEMA}.billing"
+        db_table = f'"{BILLING_SCHEMA}"."billing"'
         verbose_name = "Billing"
         unique_together = ("title", "number")
 
@@ -103,7 +103,7 @@ class Bill(IDMixin, TimestampMixin, models.Model):
 
 class ActionCode(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{BILLING_SCHEMA}.action_code"
+        db_table = f'"{BILLING_SCHEMA}"."action_code"'
         unique_together = ("code", "classification")
 
     code = models.CharField(max_length=255)
@@ -111,12 +111,12 @@ class ActionCode(IDMixin, TimestampMixin, models.Model):
     description = models.CharField(max_length=255)
 
     def __str__(self):
-        return f"{self.code}. {self.title}"
+        return f"{self.code}. {self.description}"
 
 
 class Action(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{BILLING_SCHEMA}.action"
+        db_table = f'"{BILLING_SCHEMA}"."action"'
         verbose_name = "Action"
         unique_together = ("title", "number")
 

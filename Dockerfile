@@ -61,9 +61,12 @@ RUN chown -R appuser:appgroup /app
 
 FROM final as CI
 COPY --from=CI-dep /usr/local /usr/local
-USER appuser
+
+# migrate the database
 RUN python manage.py migrate
-CMD pytest .
+
+USER appuser
+CMD ["python", "manage.py", "migrate;", "pytest ." ]
 
 
 # Production Stage
@@ -77,7 +80,4 @@ RUN python manage.py collectstatic --noinput
 # run the server as appuser
 USER appuser
 
-# run migrations
-RUN python manage.py migrate
-
-CMD ["gunicorn", "billing_admin.wsgi:application", "--bind", "0.0.0.0:8000"]
+CMD python manage.py migrate; gunicorn billing_admin.wsgi:application --bind 0.0.0.0:8000

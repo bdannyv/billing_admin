@@ -22,7 +22,7 @@ class TimestampMixin(models.Model):
 
 class Guideline(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{GUIDELINE_SCHEMA}.guideline"
+        db_table = f'"{GUIDELINE_SCHEMA}"."guideline"'
         verbose_name = "Guideline"
         verbose_name_plural = "Guidelines"
 
@@ -39,7 +39,7 @@ class Guideline(IDMixin, TimestampMixin, models.Model):
 
 class GuidelinePayer(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{GUIDELINE_SCHEMA}.guideline_payer"
+        db_table = f'"{GUIDELINE_SCHEMA}"."guideline_payer"'
         verbose_name = "Guideline <-> Payer"
         verbose_name_plural = "Guideline <-> Payer mapping"
         unique_together = ("guideline", "payer")
@@ -54,7 +54,7 @@ class GuidelinePayer(IDMixin, TimestampMixin, models.Model):
 
 class GuidelineMatter(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{GUIDELINE_SCHEMA}.guideline_matter"
+        db_table = f'"{GUIDELINE_SCHEMA}"."guideline_matter"'
         verbose_name = "Guideline <-> Matter"
         verbose_name_plural = "Guideline <-> Matter Mapping"
         unique_together = ("guideline", "matter")
@@ -69,7 +69,7 @@ class GuidelineMatter(IDMixin, TimestampMixin, models.Model):
 
 class GuidelineClient(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{GUIDELINE_SCHEMA}.guideline_client"
+        db_table = f'"{GUIDELINE_SCHEMA}"."guideline_client"'
         verbose_name = "Guideline <-> Client"
         verbose_name_plural = "Guideline <-> Client Mapping"
         unique_together = ("guideline", "client")
@@ -84,7 +84,7 @@ class GuidelineClient(IDMixin, TimestampMixin, models.Model):
 
 class GuidelineActor(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{GUIDELINE_SCHEMA}.guideline_actor"
+        db_table = f'"{GUIDELINE_SCHEMA}"."guideline_actor"'
         verbose_name = "Guideline <-> Actor"
         verbose_name_plural = "Guideline <-> Client Mapping"
         unique_together = ("guideline", "actor")
@@ -99,7 +99,7 @@ class GuidelineActor(IDMixin, TimestampMixin, models.Model):
 
 class Rule(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{GUIDELINE_SCHEMA}.rule"
+        db_table = f'"{GUIDELINE_SCHEMA}"."rule"'
         verbose_name = "Rule"
         verbose_name_plural = "Rules"
 
@@ -113,7 +113,7 @@ class Rule(IDMixin, TimestampMixin, models.Model):
 
 class RulePayer(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{GUIDELINE_SCHEMA}.rule_payer"
+        db_table = f'"{GUIDELINE_SCHEMA}"."rule_payer"'
         verbose_name = "Rule <-> Payer"
         verbose_name_plural = "Rule <-> Payer mapping"
         unique_together = ("rule", "payer")
@@ -128,7 +128,7 @@ class RulePayer(IDMixin, TimestampMixin, models.Model):
 
 class RuleMatter(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{GUIDELINE_SCHEMA}.rule_matter"
+        db_table = f'"{GUIDELINE_SCHEMA}"."rule_matter"'
         verbose_name = "Rule <-> Matter"
         verbose_name_plural = "Rule <-> Matter Mapping"
         unique_together = ("rule", "matter")
@@ -143,7 +143,7 @@ class RuleMatter(IDMixin, TimestampMixin, models.Model):
 
 class RuleClient(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{GUIDELINE_SCHEMA}.rule_client"
+        db_table = f'"{GUIDELINE_SCHEMA}"."rule_client"'
         verbose_name = "Rule <-> Client"
         verbose_name_plural = "Rule <-> Client Mapping"
         unique_together = ("rule", "client")
@@ -158,7 +158,7 @@ class RuleClient(IDMixin, TimestampMixin, models.Model):
 
 class RuleActor(IDMixin, TimestampMixin, models.Model):
     class Meta:
-        db_table = f"{GUIDELINE_SCHEMA}.rule_actor"
+        db_table = f'"{GUIDELINE_SCHEMA}"."rule_actor"'
         verbose_name = "Rule <-> Actor"
         verbose_name_plural = "Rule <-> Client Mapping"
         unique_together = ("rule", "actor")
