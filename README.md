@@ -22,3 +22,23 @@ team activities.
 - Nginx
 - Docker
 - Poetry
+
+## How to run
+1. In case tou have make installed, to start application just run
+```shell
+make build-up
+```
+2. In case you have docker-compose installed, to start application just run
+```shell
+docker-compose up -d --build
+```
+Application is available on http://localhost:80
+
+To stop application run
+```shell
+make stop
+```
+or
+```shell
+docker-compose down
+```
